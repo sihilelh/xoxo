@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+html,
+body,
+section,
+div {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+.section {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#game,
+#loading,
+#error_section {
+  display: none;
+  opacity: 0;
+}
+.card {
+  padding: 15px;
+  background: #fff;
+  border-radius: 10px;
+}
+.player-1 {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.player-1 .image {
+  width: 80px;
+  height: auto;
+}
+.player-1 .image img {
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+}
+.player-1 .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 10px;
+}
+.player-2 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.player-2 .image {
+  width: 80px;
+  height: auto;
+  order: 2;
+}
+.player-2 .image img {
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+}
+.player-2 .content {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10px;
+}
+.player-1.active {
+  opacity: 1;
+}
+.player-2.active {
+  opacity: 1;
+}
+.tiles {
+  background: #fff;
+  border-radius: 10px;
+  transform: scale(0);
+  transition: all 0.5s;
+}
+.tiles.active {
+  transform: scale(1);
+}
+
+.tile-row {
+  display: flex;
+}
+.block {
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  margin: 15px;
+  border-radius: 7px;
+  box-shadow: 1px 1px 10px #00000033;
+  transition: all 0.5s;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.block:hover {
+  background: #eee;
+}
+.wait-msg {
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+}
+@media screen and (max-width: 768px) {
+  .player-1 .content,
+  .player-2 .content {
+    display: none;
+  }
+}
+.p1,
+.p2 {
+  transition: all 0.3s;
+}
+.block .p1 {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  width: 70%;
+  height: 70%;
+  border: 0 solid #ffcc00;
+  border-radius: 50%;
+  opacity: 0;
+}
+.block .p1.active {
+  opacity: 1;
+  border: 10px solid #ffcc00;
+}
+.block .p2.active {
+  opacity: 1;
+}
+.block .p2 {
+  opacity: 0;
+  position: relative;
+  height: 70px;
+  width: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.block .p2::before,
+.block .p2::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 0;
+  background-color: #9a00cc;
+}
+
+.block .p2.active::before {
+  transform: rotate(45deg);
+  height: 7px;
+}
+
+.block .p2.active::after {
+  transform: rotate(-45deg);
+  height: 7px;
+}
+.winner_modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+}

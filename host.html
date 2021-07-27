@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="section" id="start">
+      <form id="join_form">
+        <div class="card">
+          <div class="mb-3">
+            <label for="player_name" class="form-label">Your Name</label>
+            <input type="text" class="form-control" required id="player_name" />
+          </div>
+          <button class="btn btn-primary" type="submit">Join</button>
+        </div>
+      </form>
+    </div>
+    <div class="section" id="loading">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="section" id="error_section">
+      <div class="card">
+        <div class="card-header bg-danger text-white fs-4 text-center fw-bold">
+          Oops!
+        </div>
+        <div class="card-body text-center">
+          <div>Maybe Another 2 players plaing in this room</div>
+          <div class="mt-4">
+            <a href="/" class="btn btn-primary">Let's Go Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="game">
+      <div class="player-1 active">
+        <div class="image">
+          <img src="/static/player1.png" alt="" />
+        </div>
+        <div class="content">
+          <div class="fs-4 fw-bold"><span id="player1name"></span>(You)</div>
+          <div>Player 1</div>
+        </div>
+      </div>
+      <div class="player-2">
+        <div class="image">
+          <img src="/static/player2.png" alt="" />
+        </div>
+        <div class="content">
+          <div class="fs-4 fw-bold"><span id="player2name"></span></div>
+          <div>Player 2</div>
+        </div>
+      </div>
+      <div class="tiles">
+        <div class="tile-row">
+          <div class="block" id="b1">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+          <div class="block" id="b2">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+          <div class="block" id="b3">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+        </div>
+        <div class="tile-row">
+          <div class="block" id="b4">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+          <div class="block" id="b5">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+          <div class="block" id="b6">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+        </div>
+        <div class="tile-row">
+          <div class="block" id="b7">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+          <div class="block" id="b8">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+          <div class="block" id="b9">
+            <div class="p1"></div>
+            <div class="p2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="wait-msg active fs-3 fw-bold">Waiting For Player 2</div>
+    </div>
+    <div>
+      <div class="modal fade" id="won" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="winner_modal">
+              <lottie-player
+                id="won_animation"
+                src="/static/win.json"
+                background="transparent"
+                speed="1"
+                style="width: 350px; height: 350px"
+              ></lottie-player>
+              <div class="text-center">
+                <div class="fs-3 fw-bold" id="winner_title"></div>
+                <div>Yeah Boi He did a grate job</div>
+                <button
+                  class="btn btn-primary my-3"
+                  onclick="window.location = '/'"
+                >
+                  Let's do it again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="modal fade" id="draw" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="winner_modal">
+              <div class="text-center">
+                <div class="fs-3 fw-bold">Well Played</div>
+                <div>No one wins the match</div>
+                <button
+                  class="btn btn-primary my-3"
+                  onclick="window.location = '/'"
+                >
+                  Let's do it again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="modal fade" id="invite" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content modal-dialog-centered">
+            <div class="modal-contetn">
+              <div class="invite">
+                <div class="modal-header">
+                  <h2>Invite to a friend</h2>
+                </div>
+                <div class="modal-body">
+                  <h3>Room ID: <span id="room-id"></span></h3>
+                  <div class="input-group mb-3">
+                    <input
+                      id="invite-link"
+                      type="text"
+                      class="form-control"
+                      value=""
+                      readonly
+                      aria-describedby="copy-invite"
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                        id="copy-invite"
+                      >
+                        Copy Link
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/static/front.host.js"></script>
+    <script src="/static/game.host.js"></script>
+    <script>
+      $("#room-id").html(gameID);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>"Xoxo"</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      .block {
+        background: #aaa;
+        width: 150px;
+        height: 150px;
+        margin: 5px;
+        cursor: pointer;
+      }
+      .row {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="block" id="b1"></div>
+      <div class="block" id="b2"></div>
+      <div class="block" id="b3"></div>
+    </div>
+    <div class="row">
+      <div class="block" id="b4"></div>
+      <div class="block" id="b5"></div>
+      <div class="block" id="b6"></div>
+    </div>
+    <div class="row">
+      <div class="block" id="b7"></div>
+      <div class="block" id="b8"></div>
+      <div class="block" id="b9"></div>
+    </div>
+    <h1 id="won"></h1>
+
+    <script>
+      let b1 = 0,
+        b2 = 0,
+        b3 = 0,
+        b4 = 0,
+        b5 = 0,
+        b6 = 0,
+        b7 = 0,
+        b8 = 0,
+        b9 = 0;
+
+      var player = 1;
+      $(".block").click((e) => {
+        var target = e.currentTarget;
+        if (target.id === "b1" && b1 === 0) {
+          b1 = player;
+        }
+        if (target.id === "b2" && b2 === 0) {
+          b2 = player;
+        }
+        if (target.id === "b3" && b3 === 0) {
+          b3 = player;
+        }
+        if (target.id === "b4" && b4 === 0) {
+          b4 = player;
+        }
+        if (target.id === "b5" && b5 === 0) {
+          b5 = player;
+        }
+        if (target.id === "b6" && b6 === 0) {
+          b6 = player;
+        }
+        if (target.id === "b7" && b7 === 0) {
+          b7 = player;
+        }
+        if (target.id === "b8" && b8 === 0) {
+          b8 = player;
+        }
+        if (target.id === "b9" && b9 === 0) {
+          b9 = player;
+        }
+        var isWon = IsWon();
+        if (isWon.game_end === false) {
+          if (player === 1) {
+            player = 2;
+          } else {
+            player = 1;
+          }
+          UpdateBlocks();
+        } else {
+          $("#won").html("Player " + isWon.winner + " Winned");
+          SetDefault();
+        }
+      });
+
+      function UpdateBlocks() {
+        if (b1 === 1) {
+          Player1Block("#b1");
+        } else if (b1 === 2) {
+          Player2Block("#b1");
+        }
+        if (b2 === 1) {
+          Player1Block("#b2");
+        } else if (b2 === 2) {
+          Player2Block("#b2");
+        }
+        if (b3 === 1) {
+          Player1Block("#b3");
+        } else if (b3 === 2) {
+          Player2Block("#b3");
+        }
+        if (b4 === 1) {
+          Player1Block("#b4");
+        } else if (b4 === 2) {
+          Player2Block("#b4");
+        }
+
+        if (b5 === 1) {
+          Player1Block("#b5");
+        } else if (b5 === 2) {
+          Player2Block("#b5");
+        }
+        if (b6 === 1) {
+          Player1Block("#b6");
+        } else if (b6 === 2) {
+          Player2Block("#b6");
+        }
+        if (b7 === 1) {
+          Player1Block("#b7");
+        } else if (b7 === 2) {
+          Player2Block("#b7");
+        }
+        if (b8 === 1) {
+          Player1Block("#b8");
+        } else if (b8 === 2) {
+          Player2Block("#b8");
+        }
+        if (b9 === 1) {
+          Player1Block("#b9");
+        } else if (b9 === 2) {
+          Player2Block("#b9");
+        }
+      }
+      function Player1Block(blockID) {
+        $(blockID).css("background", "#00ff00");
+      }
+      function Player2Block(blockID) {
+        $(blockID).css("background", "#ff0000");
+      }
+
+      function IsWon() {
+        if (b1 === 1 && b2 === 1 && b3 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+        if (b4 === 1 && b5 === 1 && b6 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+        if (b7 === 1 && b8 === 1 && b9 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+
+        if (b1 === 1 && b4 === 1 && b7 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+        if (b2 === 1 && b5 === 1 && b8 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+        if (b3 === 1 && b6 === 1 && b9 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+
+        if (b1 === 1 && b5 === 1 && b9 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+        if (b3 === 1 && b5 === 1 && b7 === 1) {
+          return {
+            game_end: true,
+            winner: 1,
+          };
+        }
+        if (b1 === 2 && b2 === 2 && b3 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+        if (b4 === 2 && b5 === 2 && b6 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+        if (b7 === 2 && b8 === 2 && b9 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+
+        if (b1 === 2 && b4 === 2 && b7 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+        if (b2 === 2 && b5 === 2 && b8 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+        if (b3 === 2 && b6 === 2 && b9 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+
+        if (b1 === 2 && b5 === 2 && b9 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+        if (b3 === 2 && b5 === 2 && b7 === 2) {
+          return {
+            game_end: true,
+            winner: 2,
+          };
+        }
+        return {
+          game_end: false,
+          winner: null,
+        };
+      }
+      function SetDefault() {}
+
+    </script>
+  </body>
+</html>
+var socket = io();
+var gameID = window.location.pathname;
+gameID = gameID.substr(1);
+socket.emit("join", gameID);
+socket.on("game", (res) => {
+  console.log(res);
+});
