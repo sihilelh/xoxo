@@ -62,4 +62,4 @@ io.on("connection", (socket) => {
 });
 
 app.use("/static", express.static("static"));
-server.listen(80);
+server.listen(3000);
