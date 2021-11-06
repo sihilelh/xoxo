@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
 
 app.use("/static", express.static("static"));
 
-const port = 80;
+const port = 8080;
 server.listen(port, () => {
   console.log(`Server Listning to port ${port}`);
 });
